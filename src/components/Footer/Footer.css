@@ -1,0 +1,34 @@
+@import "../../vendor/fonts.css";
+.footer__powered-by {
+  font-family: "Roboto";
+  color: #b6bcbf;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 400;
+}
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 104px;
+  align-items: center;
+  height: 80px;
+}
+.footer__nav {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+.footer__navlink {
+  color: #1a1b22;
+  height: 24px;
+  text-decoration: none;
+}
+.footer__navlink-img-container {
+  display: flex;
+  gap: 24px;
+}
+.footer__navlink-img {
+  height: 24px;
+  width: 24px;
+}

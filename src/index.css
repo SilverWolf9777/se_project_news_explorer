@@ -1,0 +1,11 @@
+@import "./vendor/fonts.css";
+@import "./components/Header/Header.css";
+@import "./components/Footer/Footer.css";
+@import "./components/About/About.css";
+@import "./components/Preloader/Preloader.css";
+@import "./components/News/News.css";
+@import "./components/NewsCard/NewsCard.css";
+body {
+  margin: 0;
+  padding: 0;
+}
