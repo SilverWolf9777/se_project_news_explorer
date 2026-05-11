@@ -18,9 +18,17 @@ const validators = {
     if (!emailPattern.test(value)) return "Please enter a valid email address";
     return "";
   },
+
+  username: (value) => {
+    if (!value) return "Email is required";
+    if (value.length < 3) return "Username must be at least 3 characters";
+    if (value.length > 30) return "Email must be 20 characters or fewer";
+    return "";
+  },
 };
 
 const RegisterModal = ({
+  onRegister,
   openedModal,
   onLogin,
   handleCloseClick,
@@ -45,7 +53,7 @@ const RegisterModal = ({
   function onFormSubmit(event) {
     const valid = handleSubmit(event);
     if (!valid) return;
-    onLogin(values).then(() => {
+    onRegister(values).then(() => {
       resetForm(defaultValues);
       handleCloseClick();
     });
@@ -59,7 +67,12 @@ const RegisterModal = ({
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
       secondaryAction={
-        <button onClick={() => setOpenedModal("signin")}>Sign in</button>
+        <button
+          className="modal__secondary-btn"
+          onClick={() => setOpenedModal("signin")}
+        >
+          Sign in
+        </button>
       }
     >
       <label htmlFor="registerModal-email" className="modal__label">
@@ -68,13 +81,13 @@ const RegisterModal = ({
           id="registerModal-email"
           name="email"
           type="text"
-          className="modal__input"
+          className="modal__input Roboto"
           placeholder="Enter email"
           value={values.email}
           onChange={handleChange}
         ></input>
         {isSubmitted && errors.email && (
-          <span className="modal__error">{errors.email}</span>
+          <span className="modal__error Roboto">{errors.email}</span>
         )}
       </label>
       <label htmlFor="registerModal-password" className="modal__label">
@@ -82,29 +95,29 @@ const RegisterModal = ({
         <input
           id="registerModal-password"
           name="password"
-          type="text"
-          className="modal__input"
+          type="password"
+          className="modal__input Roboto"
           placeholder="Enter password"
           value={values.password}
           onChange={handleChange}
         ></input>
         {isSubmitted && errors.password && (
-          <span className="modal__error">{errors.password}</span>
+          <span className="modal__error Roboto">{errors.password}</span>
         )}
       </label>
       <label htmlFor="registerModal-password" className="modal__label">
         Username
         <input
           id="register-username"
-          name="password"
+          name="username"
           type="text"
-          className="modal__input"
-          placeholder="Enter password"
-          value={values.password}
+          className="modal__input Roboto"
+          placeholder="Enter username"
+          value={values.username}
           onChange={handleChange}
         ></input>
         {isSubmitted && errors.username && (
-          <span className="modal__error">{errors.username}</span>
+          <span className="modal__error Roboto">{errors.username}</span>
         )}
       </label>
     </ModalWithForm>

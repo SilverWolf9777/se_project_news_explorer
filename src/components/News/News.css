@@ -9,8 +9,6 @@
 }
 .news__found {
   margin: 0;
-  font-family: "Roboto Slab";
-  font-weight: 400;
   font-size: 40px;
   line-height: 46px;
   letter-spacing: 0px;
@@ -21,10 +19,41 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
+.news__not-found-img {
+  width: 83px;
+  height: 83px;
+  align-self: center;
+  padding: 6px 0 32px 0;
+}
+.news__not-found-title {
+  width: 356px;
+  height: 30px;
+  font-size: 26px;
+  line-height: 30px;
+  align-self: center;
+  text-align: center;
+}
+.news__not-found-caption {
+  width: 356px;
+  height: 48px;
+  align-self: center;
+  text-align: center;
+}
+.news__center {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  gap: 16px;
+}
 .news__showmore-btn {
   width: 288px;
   height: 64px;
   border-radius: 80px;
   border: none;
   align-self: center;
+  cursor: pointer;
+}
+.hidden {
+  opacity: 0;
 }

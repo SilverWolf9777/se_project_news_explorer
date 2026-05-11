@@ -1,22 +1,84 @@
+import { useContext } from "react";
+import { useLocation } from "react-router-dom";
+import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import bookmark from "../../assets/bookmark.svg";
 import bookmarked from "../../assets/bookmarked.svg";
-function NewsCard({ article }) {
+import bookmarkHovered from "../../assets/bookmark-hovered.svg";
+import removeIcon from "../../assets/removeIcon.svg";
+import removeIconHovered from "../../assets/removeIcon-hovered.svg";
+
+function NewsCard({ article, onBookmarkClick, onRemoveClick }) {
+  const location = useLocation();
+
+  const isSavedNews = location.pathname === "/saved-news";
+  const { isLoggedIn, currentUser } = useContext(CurrentUserContext);
   const date = new Date(article.publishedAt);
   const formatted = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+  function stripHTML(text = "") {
+    const doc = new DOMParser().parseFromString(text, "text/html");
+
+    return (doc.body.textContent || "").replace(/\[\+\d+\schars\]/, "");
+  }
+  const isBookmarked = currentUser?.articles?.some((savedArticle) => {
+    return savedArticle.url === article.url;
+  });
+
+  const savedUrls = new Set(
+    (currentUser?.articles || []).filter(Boolean).map((a) => a?.url),
+  );
+
   return (
     <div className="card">
       <img src={article.urlToImage} alt="article image" className="card__img" />
-      <div className="card__bookmark_background">
-        <img src={bookmark} alt="bookmark" className="card__bookmark" />
+      <div className="card__bookmark_position">
+        <p className={isSavedNews ? "card__articleSearched" : "hidden"}>
+          {article.keyword}
+        </p>
+        <div className="card__row">
+          <p
+            className={
+              isSavedNews
+                ? "card__removeIcon_hoversign Roboto_medium"
+                : !isLoggedIn
+                  ? "card__bookmark_hoversign Roboto_medium"
+                  : "hidden"
+            }
+          >
+            {isSavedNews ? "Remove from saved" : "Sign in to save articles"}
+          </p>
+
+          <button
+            onClick={isSavedNews ? onRemoveClick : onBookmarkClick}
+            className="card__bookmark_background"
+          >
+            <img
+              src={
+                isSavedNews
+                  ? removeIcon
+                  : isLoggedIn
+                    ? isBookmarked
+                      ? bookmarked
+                      : bookmark
+                    : bookmark
+              }
+              alt="bookmark/remove"
+              className={isSavedNews ? "card__removeIcon" : "card__bookmark"}
+            />
+          </button>
+        </div>
       </div>
-      <p className="date">{formatted}</p>
-      <h1 className="card__description">{article.description}</h1>
-      <p className="card__content">{article.content}</p>
-      <p className="card__footer">{article.source.name}</p>
+      <div className="card__text">
+        <p className="card__date">{formatted}</p>
+        <h1 className="card__description RobotoSlab">{article.description}</h1>
+        <p className="card__content Roboto">{stripHTML(article.content)}</p>
+        <p className="card__footer RobotoSlab_bold text-16">
+          {article.source.name}
+        </p>
+      </div>
     </div>
   );
 }

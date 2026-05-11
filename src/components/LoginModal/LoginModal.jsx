@@ -1,6 +1,8 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
+import { useContext, useEffect } from "react";
 import { useValidation } from "../../hooks/useValidation";
+import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 
 const validators = {
   password: (value) => {
@@ -41,6 +43,8 @@ const LoginModal = ({
     resetForm,
   } = useValidation(defaultValues, validators);
 
+  const { setCurrentUser } = useContext(CurrentUserContext);
+
   function onFormSubmit(event) {
     const valid = handleSubmit(event);
     if (!valid) return;
@@ -57,8 +61,14 @@ const LoginModal = ({
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
       buttonText={"Sign in"}
+      isDisabled={false}
       secondaryAction={
-        <button onClick={() => setOpenedModal("signup")}>Sign up</button>
+        <button
+          className="modal__secondary-btn"
+          onClick={() => setOpenedModal("signup")}
+        >
+          or <span className="blueText">Sign up</span>
+        </button>
       }
     >
       <label htmlFor="loginModal-email" className="modal__label">
@@ -67,13 +77,13 @@ const LoginModal = ({
           id="loginModal-email"
           name="email"
           type="text"
-          className="modal__input"
+          className="modal__input Roboto"
           placeholder="Enter email"
           value={values.email}
           onChange={handleChange}
         ></input>
         {isSubmitted && errors.email && (
-          <span className="modal__error">{errors.email}</span>
+          <span className="modal__error Roboto">{errors.email}</span>
         )}
       </label>
       <label htmlFor="loginModal-password" className="modal__label">
@@ -82,13 +92,13 @@ const LoginModal = ({
           id="loginModal-password"
           name="password"
           type="text"
-          className="modal__input"
+          className="modal__input Roboto"
           placeholder="Enter password"
           value={values.password}
           onChange={handleChange}
         ></input>
         {isSubmitted && errors.password && (
-          <span className="modal__error">{errors.password}</span>
+          <span className="modal__error Roboto">{errors.password}</span>
         )}
       </label>
     </ModalWithForm>

@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import { CurrentUserContext } from "./components/Contexts/CurrentUserContext";
+import { ApiRequestContext } from "./components/Contexts/apiRequestContext";
+
 import "./App.css";
 import "./index.css";
 import Header from "./components/Header/Header";
@@ -13,25 +22,39 @@ import Preloader from "./components/Preloader/Preloader";
 import News from "./components/News/News";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [openedModal, setOpenedModal] = useState("signin");
+  const [openedModal, setOpenedModal] = useState("");
   const [cardArray, setCardArray] = useState([]);
+  const [hasSearched, setHasSearched] = useState("");
   const [apiRequestData, setApiRequestData] = useState({
     q: "",
     sortBy: "popularity",
     apiKey: "09a571dd969f418797b2223f529f5110",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState(null);
   const handleCloseClick = () => {
     setOpenedModal(null);
   };
+  const location = useLocation();
+  const isSavedNews = location.pathname === "/saved-news";
+  useEffect(() => {
+    setHasSearched("");
+    setCardArray([]);
+  }, [isSavedNews]);
   async function onSearchClick() {
     try {
+      setIsLoading(true);
+      setSearchError(null);
       const { q, sortBy, apiKey } = apiRequestData;
       const today = new Date();
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(today.getDate() - 7);
       const format = (d) => d.toISOString().split("T")[0];
+      setHasSearched(q);
       const res = await fetch(
         `https://newsapi.org/v2/everything?q=${q}&from=${format(sevenDaysAgo)}&to=${format(today)}&sortBy=${sortBy}&apiKey=${apiKey}`,
       );
@@ -39,44 +62,139 @@ function App() {
         throw new Error("Network response was not ok");
       }
       const data = await res.json();
-      console.log(data.articles[1]);
-      setCardArray(data.articles);
+      const enrichedArticles = data.articles.map((article) => ({
+        ...article,
+        keyword: q,
+      }));
+
+      setCardArray(enrichedArticles);
     } catch (err) {
       console.error("Error", err);
+      if (err.message === "404") {
+        setSearchError("not_found");
+      } else {
+        setSearchError("error");
+      }
+      setCardArray([]);
+    } finally {
+      setIsLoading(false);
     }
+  }
+  function handleRegister(values) {
+    const { username, email, password } = values;
+
+    const newUser = {
+      name: username,
+      email,
+      password,
+      articles: [],
+    };
+
+    setUsers((prevUsers) => ({
+      ...prevUsers,
+      [username.toLowerCase()]: newUser,
+    }));
+
+    setCurrentUser(newUser);
+    setIsLoggedIn(true);
+
+    return Promise.resolve(newUser);
+  }
+  function handleLogin(values) {
+    const user = Object.values(users).find(
+      (u) => u.email === values.email && u.password === values.password,
+    );
+
+    if (!user) {
+      console.log("Invalid login");
+      return Promise.reject();
+    }
+
+    setCurrentUser(user);
+    setIsLoggedIn(true);
+    return Promise.resolve(user);
   }
   function handleLogout() {
     setIsLoggedIn(false);
+    setCurrentUser(null);
+    navigate("/");
   }
+
+  function handleRemoveClick(article) {
+    setCurrentUser((prevUser) => {
+      if (!prevUser) return prevUser;
+
+      return {
+        ...prevUser,
+        articles: prevUser.articles.filter((a) => a.url !== article.url),
+      };
+    });
+  }
+  function handleBookmarkClick(article) {
+    setCurrentUser((prevUser) => {
+      if (!prevUser) return prevUser;
+
+      const articles = prevUser.articles || [];
+
+      const isAlreadySaved = articles.some((a) => a.url === article.url);
+
+      return {
+        ...prevUser,
+        articles: isAlreadySaved
+          ? articles.filter((a) => a.url !== article.url) // remove
+          : [...articles, article], // add
+      };
+    });
+  }
+
   return (
-    <>
-      <Main
-        onSearchClick={onSearchClick}
-        apiRequestData={apiRequestData}
-        setApiRequestData={setApiRequestData}
+    <ApiRequestContext.Provider value={{ apiRequestData, setApiRequestData }}>
+      <CurrentUserContext.Provider
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          currentUser,
+          setCurrentUser,
+        }}
       >
-        <Header
-          isLoggedIn={isLoggedIn}
-          handleLogout={handleLogout}
-          currentUser={currentUser}
+        <Main
+          onSearchClick={onSearchClick}
+          onRemoveClick={handleRemoveClick}
+          onBookmarkClick={handleBookmarkClick}
+          savedNews={currentUser?.articles}
+          q={apiRequestData.q}
+        >
+          <Header handleLogout={handleLogout} setOpenedModal={setOpenedModal} />
+        </Main>
+        {hasSearched === "" ? (
+          <></>
+        ) : (
+          <>
+            {isLoading && <Preloader />}
+            <News
+              cardArray={cardArray}
+              onRemoveClick={handleRemoveClick}
+              onBookmarkClick={handleBookmarkClick}
+              q={apiRequestData.q}
+            ></News>
+          </>
+        )}
+        <LoginModal
+          openedModal={openedModal}
+          handleCloseClick={handleCloseClick}
           setOpenedModal={setOpenedModal}
-        />
-      </Main>
-      <News cardArray={cardArray}></News>
-      {/* <Preloader></Preloader> */}
-      <LoginModal
-        openedModal={openedModal}
-        handleCloseClick={handleCloseClick}
-        setOpenedModal={setOpenedModal}
-      ></LoginModal>
-      <RegisterModal
-        openedModal={openedModal}
-        handleCloseClick={handleCloseClick}
-        setOpenedModal={setOpenedModal}
-      ></RegisterModal>
-      <About />
-      <Footer />
-    </>
+          onLogin={handleLogin}
+        ></LoginModal>
+        <RegisterModal
+          onRegister={handleRegister}
+          openedModal={openedModal}
+          handleCloseClick={handleCloseClick}
+          setOpenedModal={setOpenedModal}
+        ></RegisterModal>
+        {isSavedNews ? <></> : <About />}
+        <Footer />
+      </CurrentUserContext.Provider>
+    </ApiRequestContext.Provider>
   );
 }
 

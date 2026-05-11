@@ -5,7 +5,7 @@ import linkedin_logo from "../../assets/linkedin_logo.svg";
 function Footer() {
   return (
     <div className="footer">
-      <div className="footer__powered-by">
+      <div className="footer__powered-by Roboto">
         @ 2026 Supersite, Powered by NewsAPI
       </div>
       <nav className="footer__nav">

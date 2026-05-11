@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import { NavLink, useLocation } from "react-router-dom";
 import logoutIcon from "../../assets/logout.svg";
 import logoutIconWhite from "../../assets/logout-white.svg";
 import "./Header.css";
 
-function Header({ isLoggedIn, handleLogout, currentUser, setOpenedModal }) {
+function Header({ handleLogout, setOpenedModal }) {
+  const { isLoggedIn, currentUser } = useContext(CurrentUserContext);
   const location = useLocation();
 
   const isSavedNews = location.pathname === "/saved-news";
@@ -17,15 +19,17 @@ function Header({ isLoggedIn, handleLogout, currentUser, setOpenedModal }) {
             : "header__color-light header__position"
         }
       >
-        <div className="header__container">
-          <NavLink to="/" className="header__logo">
+        <div className="header__container header__bottom-border">
+          <NavLink to="/" className="header__logo RobotoSlab_bold">
             NewsExplorer
           </NavLink>
           <div className="header__row">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "nav__link nav__link_active" : "nav__link"
+                isActive
+                  ? "nav__link nav__link_active Roboto_medium"
+                  : "nav__link Roboto_medium"
               }
             >
               Home
@@ -47,13 +51,18 @@ function Header({ isLoggedIn, handleLogout, currentUser, setOpenedModal }) {
                 <NavLink
                   to="/saved-news"
                   className={({ isActive }) =>
-                    isActive ? "nav__link nav__link_active" : "nav__link"
+                    isActive
+                      ? "nav__link nav__link_active Roboto_medium"
+                      : "nav__link Roboto_medium"
                   }
                 >
                   Saved articles
                 </NavLink>
-                <button className="header__logout-btn" onClick={handleLogout}>
-                  {currentUser}
+                <button
+                  className="header__logout-btn  Roboto_medium"
+                  onClick={handleLogout}
+                >
+                  {currentUser?.name}
                   <img
                     className={
                       isSavedNews

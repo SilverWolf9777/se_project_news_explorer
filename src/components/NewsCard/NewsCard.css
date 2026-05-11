@@ -2,6 +2,8 @@
 .card {
   display: flex;
   flex-direction: column;
+  width: 400px;
+  height: 576px;
   max-width: 400px;
   max-height: 576px;
   position: relative;
@@ -23,8 +25,24 @@
 .card__bookmark {
   width: 24px;
   height: 24px;
+  object-fit: contain;
 }
+
+.card__bookmark:hover {
+  content: url("../../assets/bookmark-hovered.svg");
+}
+.card__removeIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.card__removeIcon:hover {
+  content: url("../../assets/removeIcon-hovered.svg");
+}
+
 .card__bookmark_background {
+  border: none;
   background-color: white;
   z-index: 2;
   height: 40px;
@@ -33,40 +51,117 @@
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  top: 24px;
-  right: 24px;
+}
+.card__articleSearched {
+  background-color: white;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+.card__bookmark_position {
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.card__row {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.card__bookmark_hoversign {
+  width: 182px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: white;
+  box-sizing: border-box;
+  font-size: 12px;
+  opacity: 1;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.card__removeIcon_hoversign {
+  width: 159px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: white;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 1;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.card__bookmark_position:hover .card__removeIcon_hoversign {
+  opacity: 1;
+}
+.card__bookmark_position:hover .card__bookmark_hoversign {
+  opacity: 1;
+}
+.card__text {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.card__date {
+  margin-bottom: 12px;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  vertical-align: middle;
 }
 .card__description {
-  font-family: "Roboto Slab";
-  font-weight: 400;
+  width: 352px;
+  height: 60px;
   font-size: 26px;
   line-height: 30px;
   letter-spacing: 0px;
   max-height: 60px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  margin-bottom: 16px;
 }
 .card__content {
-  font-family: "Roboto";
-  font-weight: 400;
+  width: 352px;
+
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0px;
-  max-height: 110px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines */
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
+  margin-bottom: 18px;
 }
+
 .card__footer {
+  margin-top: auto;
   color: #b6bcbf;
-  font-family: "Roboto Slab";
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
+}
+
+.hidden {
+  opacity: 0;
 }

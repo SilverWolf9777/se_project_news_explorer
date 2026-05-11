@@ -1,10 +1,8 @@
 @import "../../vendor/fonts.css";
 .footer__powered-by {
-  font-family: "Roboto";
   color: #b6bcbf;
   font-size: 16px;
   text-decoration: none;
-  font-weight: 400;
 }
 .footer {
   display: flex;

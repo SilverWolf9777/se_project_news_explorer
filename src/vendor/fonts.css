@@ -11,3 +11,51 @@
   font-weight: 100 900;
   font-style: normal;
 }
+@font-face {
+  font-family: "Roboto Bold";
+  src: url("./fonts/Roboto-SemiBold.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+.blueText {
+  color: #2f71e5;
+}
+.RobotoSlab {
+  font-family: "Roboto Slab";
+  font-weight: 400;
+}
+.RobotoSlab_medium {
+  font-family: "Roboto Slab";
+  font-weight: 500;
+}
+.RobotoSlab_bold {
+  font-family: "Roboto Slab";
+  font-weight: 700;
+}
+.Roboto {
+  font-family: "Roboto";
+  font-weight: 400;
+}
+.Roboto_medium {
+  font-family: "Roboto";
+  font-weight: 500;
+}
+.Roboto_bold {
+  font-family: "Roboto Bold";
+  font-weight: 700;
+}
+.text-20 {
+  font-size: 20px;
+  line-height: 24px;
+}
+.text-18 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.text-16 {
+  font-size: 16px;
+  line-height: 20px;
+}
+.text-12 {
+  font-size: 12px;
+}

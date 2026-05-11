@@ -18,15 +18,11 @@
 }
 .about__title {
   margin: 0;
-  font-family: "Roboto Slab";
-  font-weight: 400;
   font-size: 40px;
   line-height: 46px;
   letter-spacing: 0px;
 }
 .about__content {
-  font-family: "Roboto";
-  font-weight: 400;
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0px;

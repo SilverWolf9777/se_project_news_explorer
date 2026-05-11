@@ -12,18 +12,24 @@
   gap: 32px;
   align-items: center;
 }
+.main__saved-page {
+  min-height: 270px;
+}
 .main__header {
-  font-family: "Roboto Slab";
-  font-weight: 400;
   font-size: 60px;
   line-height: 64px;
   letter-spacing: 0px;
   color: white;
   max-width: 608px;
 }
+.main__column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 0 56px 104px;
+  box-sizing: border-box;
+}
 .main__context {
-  font-family: "Roboto";
-  font-weight: 400;
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0px;
@@ -44,11 +50,20 @@
   padding: 0 24px;
   border-top-left-radius: 100px;
   border-bottom-left-radius: 100px;
-  font-family: "Roboto";
-  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0px;
+  background-color: white;
+  color: black;
+}
+
+/* Chrome autofill override */
+.main__input:-webkit-autofill,
+.main__input:-webkit-autofill:hover,
+.main__input:-webkit-autofill:focus,
+.main__input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
 }
 .main__search-btn {
   min-width: 168px;
@@ -58,11 +73,48 @@
   color: white;
   border: none;
   cursor: pointer;
-  font-family: "Roboto";
-  font-weight: 500;
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0px;
   text-align: center;
   vertical-align: middle;
+}
+.main__grey-title {
+  width: 712px;
+  height: 24px;
+  top: 90px;
+  left: 40px;
+  opacity: 1;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #1a1b2280;
+}
+.main__articles_saved {
+  width: 336px;
+  height: 68px;
+  top: 130px;
+  left: 40px;
+  opacity: 1;
+  font-size: 30px;
+  line-height: 34px;
+  letter-spacing: 0px;
+  color: #1a1b22;
+}
+.main__keywords {
+  width: 712px;
+  height: 24px;
+  top: 214px;
+  left: 40px;
+  opacity: 1;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+}
+.main__keywords-span {
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #1a1b22;
+  font-weight: 700;
 }
