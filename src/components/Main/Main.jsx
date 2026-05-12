@@ -9,6 +9,7 @@ function Main({
   children,
   onSearchClick,
   savedNews,
+  isLoading,
   onBookmarkClick = () => {},
   onRemoveClick = () => {},
   q,
@@ -54,6 +55,7 @@ function Main({
         cardArray={savedNews || []}
         onRemoveClick={onRemoveClick}
         onBookmarkClick={onBookmarkClick}
+        isLoading={isLoading}
       ></News>
     </div>
   ) : (

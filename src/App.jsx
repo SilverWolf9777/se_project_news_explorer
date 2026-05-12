@@ -106,7 +106,6 @@ function App() {
     );
 
     if (!user) {
-      console.log("Invalid login");
       return Promise.reject();
     }
 
@@ -163,6 +162,7 @@ function App() {
           onBookmarkClick={handleBookmarkClick}
           savedNews={currentUser?.articles}
           q={apiRequestData.q}
+          isLoading={isLoading}
         >
           <Header handleLogout={handleLogout} setOpenedModal={setOpenedModal} />
         </Main>
@@ -170,12 +170,12 @@ function App() {
           <></>
         ) : (
           <>
-            {isLoading && <Preloader />}
             <News
               cardArray={cardArray}
               onRemoveClick={handleRemoveClick}
               onBookmarkClick={handleBookmarkClick}
               q={apiRequestData.q}
+              isLoading={isLoading}
             ></News>
           </>
         )}

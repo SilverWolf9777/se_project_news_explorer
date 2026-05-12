@@ -19,8 +19,11 @@
   animation: spin 0.75s infinite linear;
 }
 .preloader__context {
+  width: 280px;
+  height: 24px;
   display: flex;
   align-self: center;
+  justify-content: center;
   position: absolute;
   top: 178px;
   margin-bottom: 80px;

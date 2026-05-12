@@ -2,7 +2,14 @@ import { useState, setState } from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import { useLocation } from "react-router-dom";
 import notFoundIcon from "../../assets/not_found.svg";
-function News({ cardArray = [], onBookmarkClick, onRemoveClick, q }) {
+import Preloader from "../Preloader/Preloader";
+function News({
+  cardArray = [],
+  onBookmarkClick,
+  onRemoveClick,
+  q,
+  isLoading,
+}) {
   const location = useLocation();
 
   const isSavedNews = location.pathname === "/saved-news";
@@ -12,7 +19,9 @@ function News({ cardArray = [], onBookmarkClick, onRemoveClick, q }) {
   }
   return (
     <div className="news__container">
-      {cardArray.length === 0 ? (
+      {isLoading ? (
+        <Preloader />
+      ) : cardArray.length === 0 ? (
         <div className="news__center">
           <img
             src={notFoundIcon}
@@ -28,7 +37,9 @@ function News({ cardArray = [], onBookmarkClick, onRemoveClick, q }) {
         </div>
       ) : (
         <>
-          <h1 className="news__found RobotoSlab">{isSavedNews ? "Saved news" : "Search results"}</h1>
+          <h1 className="news__found RobotoSlab">
+            {isSavedNews ? "Saved news" : "Search results"}
+          </h1>
 
           <div className="news__cards-container">
             {(isSavedNews ? cardArray : cardArray.slice(0, visibleCount)).map(

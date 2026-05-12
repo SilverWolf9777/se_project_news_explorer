@@ -1,6 +1,6 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useValidation } from "../../hooks/useValidation";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 
@@ -28,6 +28,8 @@ const LoginModal = ({
   handleCloseClick,
   setOpenedModal,
 }) => {
+  const [loginError, setLoginError] = useState("");
+
   const defaultValues = {
     email: "",
     password: "",
@@ -45,13 +47,24 @@ const LoginModal = ({
 
   const { setCurrentUser } = useContext(CurrentUserContext);
 
+  useEffect(() => {
+    if (openedModal === "signin") {
+      setLoginError("");
+    }
+  }, [openedModal]);
+
   function onFormSubmit(event) {
     const valid = handleSubmit(event);
     if (!valid) return;
-    onLogin(values).then(() => {
-      resetForm(defaultValues);
-      handleCloseClick();
-    });
+    onLogin(values)
+      .then(() => {
+        setLoginError("");
+        resetForm(defaultValues);
+        handleCloseClick();
+      })
+      .catch(() => {
+        setLoginError("Invalid email or password");
+      });
   }
 
   return (
@@ -61,7 +74,7 @@ const LoginModal = ({
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
       buttonText={"Sign in"}
-      isDisabled={false}
+      isDisabled={Object.values(errors).some(error => error !== '')}
       secondaryAction={
         <button
           className="modal__secondary-btn"
@@ -99,6 +112,9 @@ const LoginModal = ({
         ></input>
         {isSubmitted && errors.password && (
           <span className="modal__error Roboto">{errors.password}</span>
+        )}
+        {loginError && (
+          <span className="modal__error Roboto">{loginError}</span>
         )}
       </label>
     </ModalWithForm>
