@@ -48,9 +48,26 @@
   height: 40px;
   width: 40px;
   display: flex;
+  background-image: url(../../assets/bookmark.svg);
+  background-repeat: no-repeat;
+  background-position: center;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+}
+.card__bookmark_background:hover {
+  background-image: url(../../assets/bookmark-hovered.svg);
+}
+
+.card__bookmark_background_saved {
+  border: none;
+  background-image: url(../../assets/bookmarked.svg);
+  padding: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
 }
 .card__articleSearched {
   background-color: white;

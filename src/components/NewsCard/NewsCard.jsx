@@ -33,7 +33,13 @@ function NewsCard({ article, onBookmarkClick, onRemoveClick }) {
 
   return (
     <div className="card">
-      <img src={article.urlToImage} alt="article image" className="card__img" />
+      <a href={article.url} className="card__img_link">
+        <img
+          src={article.urlToImage}
+          alt="article image"
+          className="card__img"
+        />
+      </a>
       <div className="card__bookmark_position">
         <p className={isSavedNews ? "card__articleSearched" : "hidden"}>
           {article.keyword}
@@ -53,22 +59,12 @@ function NewsCard({ article, onBookmarkClick, onRemoveClick }) {
 
           <button
             onClick={isSavedNews ? onRemoveClick : onBookmarkClick}
-            className="card__bookmark_background"
-          >
-            <img
-              src={
-                isSavedNews
-                  ? removeIcon
-                  : isLoggedIn
-                    ? isBookmarked
-                      ? bookmarked
-                      : bookmark
-                    : bookmark
-              }
-              alt="bookmark/remove"
-              className={isSavedNews ? "card__removeIcon" : "card__bookmark"}
-            />
-          </button>
+            className={
+              isBookmarked
+                ? "card__bookmark_background_saved"
+                : "card__bookmark_background"
+            }
+          ></button>
         </div>
       </div>
       <div className="card__text">
