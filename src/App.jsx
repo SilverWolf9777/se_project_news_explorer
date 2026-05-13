@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "./components/Contexts/CurrentUserContext";
 import { ApiRequestContext } from "./components/Contexts/apiRequestContext";
 
@@ -13,12 +7,10 @@ import "./App.css";
 import "./index.css";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
-import ModalWithForm from "./components/ModalWithForm/ModalWithForm";
 import LoginModal from "./components/LoginModal/LoginModal";
 import RegisterModal from "./components/RegisterModal/RegisterModal";
 import Footer from "./components/Footer/Footer";
 import About from "./components/About/About";
-import Preloader from "./components/Preloader/Preloader";
 import News from "./components/News/News";
 
 function App() {
@@ -35,20 +27,14 @@ function App() {
     apiKey: "09a571dd969f418797b2223f529f5110",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [searchError, setSearchError] = useState(null);
   const handleCloseClick = () => {
     setOpenedModal(null);
   };
   const location = useLocation();
   const isSavedNews = location.pathname === "/saved-news";
-  useEffect(() => {
-    setHasSearched("");
-    setCardArray([]);
-  }, [isSavedNews]);
   async function onSearchClick() {
     try {
       setIsLoading(true);
-      setSearchError(null);
       const { q, sortBy, apiKey } = apiRequestData;
       const today = new Date();
       const sevenDaysAgo = new Date();
@@ -70,11 +56,6 @@ function App() {
       setCardArray(enrichedArticles);
     } catch (err) {
       console.error("Error", err);
-      if (err.message === "404") {
-        setSearchError("not_found");
-      } else {
-        setSearchError("error");
-      }
       setCardArray([]);
     } finally {
       setIsLoading(false);
@@ -166,18 +147,14 @@ function App() {
         >
           <Header handleLogout={handleLogout} setOpenedModal={setOpenedModal} />
         </Main>
-        {hasSearched === "" ? (
-          <></>
-        ) : (
-          <>
-            <News
-              cardArray={cardArray}
-              onRemoveClick={handleRemoveClick}
-              onBookmarkClick={handleBookmarkClick}
-              q={apiRequestData.q}
-              isLoading={isLoading}
-            ></News>
-          </>
+        {!isSavedNews && hasSearched !== "" && (
+          <News
+            cardArray={cardArray}
+            onRemoveClick={handleRemoveClick}
+            onBookmarkClick={handleBookmarkClick}
+            q={apiRequestData.q}
+            isLoading={isLoading}
+          />
         )}
         <LoginModal
           openedModal={openedModal}

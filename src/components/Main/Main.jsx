@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { ApiRequestContext } from "../Contexts/apiRequestContext";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
@@ -12,10 +12,9 @@ function Main({
   isLoading,
   onBookmarkClick = () => {},
   onRemoveClick = () => {},
-  q,
 }) {
   const { apiRequestData, setApiRequestData } = useContext(ApiRequestContext);
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
   const location = useLocation();
 
   const isSavedNews = location.pathname === "/saved-news";

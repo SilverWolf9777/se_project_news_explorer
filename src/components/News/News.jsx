@@ -1,15 +1,9 @@
-import { useState, setState } from "react";
+import { useState } from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import { useLocation } from "react-router-dom";
 import notFoundIcon from "../../assets/not_found.svg";
 import Preloader from "../Preloader/Preloader";
-function News({
-  cardArray = [],
-  onBookmarkClick,
-  onRemoveClick,
-  q,
-  isLoading,
-}) {
+function News({ cardArray = [], onBookmarkClick, onRemoveClick, isLoading }) {
   const location = useLocation();
 
   const isSavedNews = location.pathname === "/saved-news";

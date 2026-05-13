@@ -30,7 +30,6 @@ const validators = {
 const RegisterModal = ({
   onRegister,
   openedModal,
-  onLogin,
   handleCloseClick,
   setOpenedModal,
 }) => {
@@ -40,15 +39,8 @@ const RegisterModal = ({
     username: "",
   };
 
-  const {
-    values,
-    handleChange,
-    errors,
-    isValid,
-    isSubmitted,
-    handleSubmit,
-    resetForm,
-  } = useValidation(defaultValues, validators);
+  const { values, handleChange, errors, isSubmitted, handleSubmit, resetForm } =
+    useValidation(defaultValues, validators);
 
   function onFormSubmit(event) {
     const valid = handleSubmit(event);

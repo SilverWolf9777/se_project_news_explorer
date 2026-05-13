@@ -1,8 +1,7 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useValidation } from "../../hooks/useValidation";
-import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 
 const validators = {
   password: (value) => {
@@ -35,25 +34,12 @@ const LoginModal = ({
     password: "",
   };
 
-  const {
-    values,
-    handleChange,
-    errors,
-    isValid,
-    isSubmitted,
-    handleSubmit,
-    resetForm,
-  } = useValidation(defaultValues, validators);
-
-  const { setCurrentUser } = useContext(CurrentUserContext);
-
-  useEffect(() => {
-    if (openedModal === "signin") {
-      setLoginError("");
-    }
-  }, [openedModal]);
+  const { values, handleChange, errors, isSubmitted, handleSubmit, resetForm } =
+    useValidation(defaultValues, validators);
 
   function onFormSubmit(event) {
+    event.preventDefault();
+    setLoginError("");
     const valid = handleSubmit(event);
     if (!valid) return;
     onLogin(values)
@@ -74,7 +60,7 @@ const LoginModal = ({
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
       buttonText={"Sign in"}
-      isDisabled={Object.values(errors).some(error => error !== '')}
+      isDisabled={Object.values(errors).some((error) => error !== "")}
       secondaryAction={
         <button
           className="modal__secondary-btn"

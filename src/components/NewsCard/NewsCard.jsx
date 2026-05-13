@@ -1,11 +1,6 @@
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
-import bookmark from "../../assets/bookmark.svg";
-import bookmarked from "../../assets/bookmarked.svg";
-import bookmarkHovered from "../../assets/bookmark-hovered.svg";
-import removeIcon from "../../assets/removeIcon.svg";
-import removeIconHovered from "../../assets/removeIcon-hovered.svg";
 
 function NewsCard({ article, onBookmarkClick, onRemoveClick }) {
   const location = useLocation();
@@ -26,10 +21,6 @@ function NewsCard({ article, onBookmarkClick, onRemoveClick }) {
   const isBookmarked = currentUser?.articles?.some((savedArticle) => {
     return savedArticle.url === article.url;
   });
-
-  const savedUrls = new Set(
-    (currentUser?.articles || []).filter(Boolean).map((a) => a?.url),
-  );
 
   return (
     <div className="card">

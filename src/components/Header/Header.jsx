@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import { NavLink, useLocation } from "react-router-dom";
 import logoutIcon from "../../assets/logout.svg";
