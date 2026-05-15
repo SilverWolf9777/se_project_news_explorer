@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "./components/Contexts/CurrentUserContext";
-import { ApiRequestContext } from "./components/Contexts/apiRequestContext";
+import { ApiRequestContext } from "./components/Contexts/ApiRequestContext";
 
 import "./App.css";
 import "./index.css";

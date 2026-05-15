@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { ApiRequestContext } from "../Contexts/apiRequestContext";
+import { ApiRequestContext } from "../Contexts/ApiRequestContext";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import News from "../News/News";
 import "./Main.css";
