@@ -4,6 +4,7 @@ This project will be a news explorer app. I will first be building the frontend 
 I will later be building the backend using MongoDB.
 
 [link to repository](https://github.com/SilverWolf9777/se_project_news_explorer#)
+[link to github pages]()
 [Project Pitch](https://youtu.be/9_1WNz-8s14)
 
 ## React Compiler
