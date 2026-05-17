@@ -57,3 +57,33 @@
 .hidden {
   opacity: 0;
 }
+@media screen and (max-width: 1025px) {
+  .news__container {
+    padding: 40px;
+  }
+  .news__cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(224px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .news__container {
+    padding: 24px 16px;
+    align-items: center;
+  }
+
+  .news__cards-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .news__found {
+    text-align: center;
+  }
+
+  .news__showmore-btn {
+    align-self: center;
+  }
+}

@@ -3,13 +3,15 @@ import { useLocation } from "react-router-dom";
 import { ApiRequestContext } from "../Contexts/ApiRequestContext";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import News from "../News/News";
+import About from "../About/About";
 import "./Main.css";
 
 function Main({
-  children,
   onSearchClick,
   savedNews,
   isLoading,
+  cardArray,
+  hasSearched,
   onBookmarkClick = () => {},
   onRemoveClick = () => {},
 }) {
@@ -17,7 +19,9 @@ function Main({
   const { currentUser } = useContext(CurrentUserContext);
   const location = useLocation();
 
-  const isSavedNews = location.pathname === "/saved-news";
+  const isSavedNews =
+    location.pathname === "/saved-news" ||
+    location.pathname === "/se_project_news_explorer/saved-news";
   function formatKeywords(keywords = []) {
     keywords = [...new Set(keywords)];
     if (keywords.length === 0) return "";
@@ -33,17 +37,16 @@ function Main({
   }
 
   return isSavedNews ? (
-    <div className="main__saved-page">
-      {children}
+    <main className="main__saved-page">
       <div className="main__column">
-        <p className="main__grey-title Roboto">Saved articles</p>
-        <h1 className="main__articles_saved RobotoSlab">
+        <p className="main__grey-title">Saved articles</p>
+        <h1 className="main__articles_saved">
           {currentUser?.name} , you have {currentUser?.articles.length} saved
           articles
         </h1>
-        <p className="main__keywords Roboto">
+        <p className="main__keywords">
           By keywords:{" "}
-          <span className="main__keywords-span Roboto_bold">
+          <span className="main__keywords-span">
             {formatKeywords(
               currentUser?.articles?.map((article) => article.keyword),
             )}
@@ -56,45 +59,19 @@ function Main({
         onBookmarkClick={onBookmarkClick}
         isLoading={isLoading}
       ></News>
-    </div>
+    </main>
   ) : (
-    <div className="main">
-      {children}
-      <div className="main__container">
-        <h1 className="main__header RobotoSlab">
-          What's going on in the world?
-        </h1>
-        <p className="main__context Roboto">
-          Find the latest news on any topic and save them in your personal
-          account.
-        </p>
-        {isSavedNews ? (
-          <div></div>
-        ) : (
-          <div className="main__searchbar">
-            <input
-              id="searchbar__input"
-              type="text"
-              placeholder="Enter topic"
-              className="main__input Roboto"
-              value={apiRequestData.q}
-              onChange={(e) => {
-                setApiRequestData((prev) => ({
-                  ...prev,
-                  q: e.target.value,
-                }));
-              }}
-            ></input>
-            <button
-              onClick={onSearchClick}
-              className="main__search-btn Roboto_medium"
-            >
-              Search
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+    <main>
+      {hasSearched !== "" && (
+        <News
+          cardArray={cardArray}
+          onRemoveClick={onRemoveClick}
+          onBookmarkClick={onBookmarkClick}
+          isLoading={isLoading}
+        />
+      )}
+      <About />
+    </main>
   );
 }
 export default Main;

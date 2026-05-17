@@ -2,9 +2,9 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  height: 576px;
   max-width: 400px;
+  width: 100%;
+  aspect-ratio: 400 / 576;
   max-height: 576px;
   position: relative;
   background-color: white;
@@ -13,13 +13,9 @@
 }
 .card__img {
   width: 100%;
-  height: 100%;
-  max-height: 272px;
-  min-height: 272px;
+  height: 272px;
   object-fit: cover;
-  overflow: hidden;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  flex-shrink: 0;
   display: block;
 }
 .card__bookmark {
@@ -35,6 +31,7 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
+  content: url("../../assets/removeIcon.svg");
 }
 
 .card__removeIcon:hover {
@@ -45,8 +42,8 @@
   border: none;
   background-color: white;
   z-index: 2;
-  height: 40px;
-  width: 40px;
+  min-height: 40px;
+  min-width: 40px;
   display: flex;
   background-image: url(../../assets/bookmark.svg);
   background-repeat: no-repeat;
@@ -66,8 +63,25 @@
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 8px;
-  height: 40px;
-  width: 40px;
+  min-height: 40px;
+  min-width: 40px;
+}
+.card__remove_background {
+  border: none;
+  background-color: white;
+  z-index: 2;
+  min-height: 40px;
+  min-width: 40px;
+  display: flex;
+  background-image: url(../../assets/removeIcon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+.card__remove_background:hover {
+  background-image: url(../../assets/removeIcon-hovered.svg);
 }
 .card__articleSearched {
   background-color: white;
@@ -133,10 +147,11 @@
   opacity: 1;
 }
 .card__text {
-  padding: 20px 24px 24px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  box-sizing: border-box;
 }
 .card__date {
   margin-bottom: 12px;
@@ -147,7 +162,7 @@
   vertical-align: middle;
 }
 .card__description {
-  width: 352px;
+  max-width: 352px;
   height: 60px;
   font-size: 26px;
   line-height: 30px;
@@ -156,11 +171,12 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   margin-bottom: 16px;
 }
 .card__content {
-  width: 352px;
+  max-width: 352px;
 
   font-size: 16px;
   line-height: 22px;
@@ -168,6 +184,7 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 5;
+  line-clamp: 5;
   -webkit-box-orient: vertical;
   margin-bottom: 18px;
 }
@@ -181,4 +198,29 @@
 
 .hidden {
   opacity: 0;
+}
+@media screen and (max-width: 1300px) {
+  .news__cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 1025px) {
+  .card__img {
+    min-height: 196px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .news__cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card__bookmark_hoversign,
+  .card__removeIcon_hoversign {
+    display: none;
+  }
+
+  .card__bookmark_position:hover .card__bookmark_hoversign,
+  .card__bookmark_position:hover .card__removeIcon_hoversign {
+    opacity: 0;
+  }
 }

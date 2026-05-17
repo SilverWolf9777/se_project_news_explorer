@@ -5,6 +5,12 @@
 @import "./components/Preloader/Preloader.css";
 @import "./components/News/News.css";
 @import "./components/NewsCard/NewsCard.css";
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;

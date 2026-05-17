@@ -4,14 +4,14 @@ function About() {
     <div className="about__container">
       <img src={aboutImg} alt="About Author Photo" className="about__image" />
       <div className="about__column">
-        <h1 className="about__title RobotoSlab">About the Author</h1>
-        <p className="about__content  Roboto">
+        <h1 className="about__title">About the Author</h1>
+        <p className="about__content">
           I'm Dylan Woolf, a full-stack developer focused on frontend
           development with React. I enjoy creating clean, responsive user
           interfaces and building full web applications using technologies like
           React, JavaScript, Node.js, Express, and MongoDB.
         </p>
-        <p className="about__content Roboto">
+        <p className="about__content">
           I began learning programming through both school and independent
           study, and later expanded my skills through the TripleTen software
           engineering bootcamp. There, I gained hands-on experience building

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "./components/Contexts/CurrentUserContext";
 import { ApiRequestContext } from "./components/Contexts/ApiRequestContext";
+import { ModalContext } from "./components/Contexts/ModalContext";
 
 import "./App.css";
 import "./index.css";
@@ -10,8 +11,6 @@ import Main from "./components/Main/Main";
 import LoginModal from "./components/LoginModal/LoginModal";
 import RegisterModal from "./components/RegisterModal/RegisterModal";
 import Footer from "./components/Footer/Footer";
-import About from "./components/About/About";
-import News from "./components/News/News";
 
 function App() {
   const navigate = useNavigate();
@@ -31,7 +30,9 @@ function App() {
     setOpenedModal(null);
   };
   const location = useLocation();
-  const isSavedNews = location.pathname === "/saved-news";
+  const isSavedNews =
+    location.pathname === "/saved-news" ||
+    location.pathname === "/se_project_news_explorer/saved-news";
   async function onSearchClick() {
     try {
       setIsLoading(true);
@@ -137,39 +138,30 @@ function App() {
           setCurrentUser,
         }}
       >
-        <Main
-          onSearchClick={onSearchClick}
-          onRemoveClick={handleRemoveClick}
-          onBookmarkClick={handleBookmarkClick}
-          savedNews={currentUser?.articles}
-          q={apiRequestData.q}
-          isLoading={isLoading}
+        <ModalContext.Provider
+          value={{
+            openedModal,
+            setOpenedModal,
+            handleCloseClick,
+            handleLogin,
+            handleRegister,
+            onSearchClick,
+          }}
         >
-          <Header handleLogout={handleLogout} setOpenedModal={setOpenedModal} />
-        </Main>
-        {!isSavedNews && hasSearched !== "" && (
-          <News
-            cardArray={cardArray}
+          <Header handleLogout={handleLogout} />
+          <Main
+            onSearchClick={onSearchClick}
             onRemoveClick={handleRemoveClick}
             onBookmarkClick={handleBookmarkClick}
-            q={apiRequestData.q}
+            savedNews={currentUser?.articles}
             isLoading={isLoading}
+            cardArray={cardArray}
+            hasSearched={hasSearched}
           />
-        )}
-        <LoginModal
-          openedModal={openedModal}
-          handleCloseClick={handleCloseClick}
-          setOpenedModal={setOpenedModal}
-          onLogin={handleLogin}
-        ></LoginModal>
-        <RegisterModal
-          onRegister={handleRegister}
-          openedModal={openedModal}
-          handleCloseClick={handleCloseClick}
-          setOpenedModal={setOpenedModal}
-        ></RegisterModal>
-        {isSavedNews ? <></> : <About />}
-        <Footer />
+          <Footer />
+          <LoginModal />
+          <RegisterModal />
+        </ModalContext.Provider>
       </CurrentUserContext.Provider>
     </ApiRequestContext.Provider>
   );

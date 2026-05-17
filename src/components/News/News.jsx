@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import { useLocation } from "react-router-dom";
+import { ApiRequestContext } from "../Contexts/ApiRequestContext";
 import notFoundIcon from "../../assets/not_found.svg";
 import Preloader from "../Preloader/Preloader";
 function News({ cardArray = [], onBookmarkClick, onRemoveClick, isLoading }) {
   const location = useLocation();
+  const { apiRequestData } = useContext(ApiRequestContext);
 
-  const isSavedNews = location.pathname === "/saved-news";
+  const isSavedNews =
+    location.pathname === "/saved-news" ||
+    location.pathname === "/se_project_news_explorer/saved-news";
   const [visibleCount, setVisibleCount] = useState(3);
   function handleShowMore() {
     setVisibleCount((prev) => prev + 3);
@@ -23,17 +27,15 @@ function News({ cardArray = [], onBookmarkClick, onRemoveClick, isLoading }) {
             className="news__not-found-img"
           />
 
-          <h1 className="news__not-found-title RobotoSlab">Nothing Found</h1>
+          <h1 className="news__not-found-title">Nothing Found</h1>
 
-          <p className="news__not-found-caption Roboto text-18">
+          <p className="news__not-found-caption text-18">
             Sorry, but nothing matched your search terms.
           </p>
         </div>
       ) : (
         <>
-          <h1 className="news__found RobotoSlab">
-            {isSavedNews ? "Saved news" : "Search results"}
-          </h1>
+          <h1 className="news__found">Search results</h1>
 
           <div className="news__cards-container">
             {(isSavedNews ? cardArray : cardArray.slice(0, visibleCount)).map(
