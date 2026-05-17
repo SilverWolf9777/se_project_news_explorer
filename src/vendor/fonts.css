@@ -20,29 +20,30 @@
 .blueText {
   color: #2f71e5;
 }
-.RobotoSlab {
-  font-family: "Roboto Slab";
+
+body {
+  font-family:
+    "Roboto",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-weight: 400;
+  color: #1a1b22;
 }
-.RobotoSlab_medium {
-  font-family: "Roboto Slab";
-  font-weight: 500;
-}
-.RobotoSlab_bold {
-  font-family: "Roboto Slab";
-  font-weight: 700;
-}
-.Roboto {
-  font-family: "Roboto";
-  font-weight: 400;
-}
-.Roboto_medium {
-  font-family: "Roboto";
-  font-weight: 500;
-}
-.Roboto_bold {
-  font-family: "Roboto Bold";
-  font-weight: 700;
+
+h1,
+h2,
+.header__logo,
+.main__header,
+.news__found,
+.card__description,
+.main__articles_saved,
+.about__title {
+  font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
 }
 .text-20 {
   font-size: 20px;

@@ -1,7 +1,8 @@
+import { useContext, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
-import { useState } from "react";
 import { useValidation } from "../../hooks/useValidation";
+import { ModalContext } from "../Contexts/ModalContext";
 
 const validators = {
   password: (value) => {
@@ -21,12 +22,9 @@ const validators = {
   },
 };
 
-const LoginModal = ({
-  openedModal,
-  onLogin,
-  handleCloseClick,
-  setOpenedModal,
-}) => {
+const LoginModal = () => {
+  const { openedModal, handleCloseClick, setOpenedModal, handleLogin } =
+    useContext(ModalContext);
   const [loginError, setLoginError] = useState("");
 
   const defaultValues = {
@@ -34,15 +32,23 @@ const LoginModal = ({
     password: "",
   };
 
-  const { values, handleChange, errors, isSubmitted, handleSubmit, resetForm } =
-    useValidation(defaultValues, validators);
+  const {
+    values,
+    handleChange,
+    errors,
+    touched,
+    isValid,
+    isSubmitted,
+    handleSubmit,
+    resetForm,
+  } = useValidation(defaultValues, validators);
 
   function onFormSubmit(event) {
     event.preventDefault();
     setLoginError("");
     const valid = handleSubmit(event);
     if (!valid) return;
-    onLogin(values)
+    handleLogin(values)
       .then(() => {
         setLoginError("");
         resetForm(defaultValues);
@@ -60,7 +66,7 @@ const LoginModal = ({
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
       buttonText={"Sign in"}
-      isDisabled={Object.values(errors).some((error) => error !== "")}
+      isDisabled={!isValid}
       secondaryAction={
         <button
           className="modal__secondary-btn"
@@ -76,13 +82,13 @@ const LoginModal = ({
           id="loginModal-email"
           name="email"
           type="text"
-          className="modal__input Roboto"
+          className="modal__input"
           placeholder="Enter email"
           value={values.email}
           onChange={handleChange}
         ></input>
-        {isSubmitted && errors.email && (
-          <span className="modal__error Roboto">{errors.email}</span>
+        {(isSubmitted || touched.email) && errors.email && (
+          <span className="modal__error">{errors.email}</span>
         )}
       </label>
       <label htmlFor="loginModal-password" className="modal__label">
@@ -91,17 +97,15 @@ const LoginModal = ({
           id="loginModal-password"
           name="password"
           type="text"
-          className="modal__input Roboto"
+          className="modal__input"
           placeholder="Enter password"
           value={values.password}
           onChange={handleChange}
         ></input>
-        {isSubmitted && errors.password && (
-          <span className="modal__error Roboto">{errors.password}</span>
+        {(isSubmitted || touched.password) && errors.password && (
+          <span className="modal__error">{errors.password}</span>
         )}
-        {loginError && (
-          <span className="modal__error Roboto">{loginError}</span>
-        )}
+        {loginError && <span className="modal__error">{loginError}</span>}
       </label>
     </ModalWithForm>
   );

@@ -30,3 +30,28 @@
   height: 24px;
   width: 24px;
 }
+@media screen and (max-width: 768px) {
+  .footer {
+    margin-top: 45px;
+    padding: 20px 16px 22px;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .footer__nav {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 16px 40px 16px;
+    align-self: flex-start;
+    box-sizing: border-box;
+  }
+  .footer__column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .footer__powered-by {
+    justify-self: center;
+    text-align: center;
+    width: 100%;
+  }
+}

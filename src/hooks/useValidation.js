@@ -19,9 +19,6 @@ export function useValidation(defaultValues = {}, validators = {}) {
     setValues,
     handleChange: basicHandleChange,
   } = useForm(defaultValues);
-  const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // run a single validator if one exists
   const validateField = (name, value) => {
@@ -41,28 +38,43 @@ export function useValidation(defaultValues = {}, validators = {}) {
     return newErrors;
   };
 
+  const initialErrors = runAllValidations(defaultValues);
+  const [errors, setErrors] = useState(initialErrors);
+  const [touched, setTouched] = useState({});
+  const [isValid, setIsValid] = useState(
+    Object.values(initialErrors).every((e) => !e),
+  );
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const updatedValues = { ...values, [name]: value };
 
     basicHandleChange(event);
+    setTouched((prev) => ({ ...prev, [name]: true }));
 
-    if (isSubmitted) {
-      // revalidate field once user has attempted submit
-      const error = validateField(name, value);
-      setErrors((prev) => ({ ...prev, [name]: error }));
-      setIsValid(Object.values({ ...errors, [name]: error }).every((e) => !e));
-    }
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors, [name]: error };
+
+    setErrors(updatedErrors);
+    setIsValid(Object.values(updatedErrors).every((e) => !e));
   };
 
   const handleSubmit = (event) => {
     if (event && event.preventDefault) event.preventDefault();
 
-    setIsSubmitted(true);
     const newErrors = runAllValidations(values);
     setErrors(newErrors);
+    setTouched(
+      Object.keys(validators).reduce(
+        (acc, name) => ({ ...acc, [name]: true }),
+        {},
+      ),
+    );
 
     const valid = Object.values(newErrors).every((e) => !e);
     setIsValid(valid);
+    setIsSubmitted(true);
     return valid;
   };
 
@@ -70,16 +82,18 @@ export function useValidation(defaultValues = {}, validators = {}) {
     (newValues = {}) => {
       setValues(newValues);
       setErrors({});
+      setTouched({});
       setIsValid(false);
       setIsSubmitted(false);
     },
-    [setValues, setErrors, setIsValid, setIsSubmitted],
+    [setValues, setErrors, setTouched, setIsValid, setIsSubmitted],
   );
 
   return {
     values,
     setValues,
     errors,
+    touched,
     isValid,
     isSubmitted,
     handleChange,

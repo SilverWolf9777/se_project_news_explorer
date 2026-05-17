@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
 import { useValidation } from "../../hooks/useValidation";
+import { ModalContext } from "../Contexts/ModalContext";
 
 const validators = {
   password: (value) => {
@@ -27,25 +29,30 @@ const validators = {
   },
 };
 
-const RegisterModal = ({
-  onRegister,
-  openedModal,
-  handleCloseClick,
-  setOpenedModal,
-}) => {
+const RegisterModal = () => {
+  const { openedModal, handleCloseClick, setOpenedModal, handleRegister } =
+    useContext(ModalContext);
   const defaultValues = {
     email: "",
     password: "",
     username: "",
   };
 
-  const { values, handleChange, errors, isSubmitted, handleSubmit, resetForm } =
-    useValidation(defaultValues, validators);
+  const {
+    values,
+    handleChange,
+    errors,
+    touched,
+    isValid,
+    isSubmitted,
+    handleSubmit,
+    resetForm,
+  } = useValidation(defaultValues, validators);
 
   function onFormSubmit(event) {
     const valid = handleSubmit(event);
     if (!valid) return;
-    onRegister(values).then(() => {
+    handleRegister(values).then(() => {
       resetForm(defaultValues);
       handleCloseClick();
     });
@@ -55,6 +62,7 @@ const RegisterModal = ({
     <ModalWithForm
       titleText="Sign up"
       buttonText={"Sign up"}
+      isDisabled={!isValid}
       isOpened={openedModal === "signup"}
       handleCloseClick={handleCloseClick}
       onSubmit={onFormSubmit}
@@ -73,13 +81,13 @@ const RegisterModal = ({
           id="registerModal-email"
           name="email"
           type="text"
-          className="modal__input Roboto"
+          className="modal__input"
           placeholder="Enter email"
           value={values.email}
           onChange={handleChange}
         ></input>
-        {isSubmitted && errors.email && (
-          <span className="modal__error Roboto">{errors.email}</span>
+        {(isSubmitted || touched.email) && errors.email && (
+          <span className="modal__error">{errors.email}</span>
         )}
       </label>
       <label htmlFor="registerModal-password" className="modal__label">
@@ -88,13 +96,13 @@ const RegisterModal = ({
           id="registerModal-password"
           name="password"
           type="password"
-          className="modal__input Roboto"
+          className="modal__input"
           placeholder="Enter password"
           value={values.password}
           onChange={handleChange}
         ></input>
-        {isSubmitted && errors.password && (
-          <span className="modal__error Roboto">{errors.password}</span>
+        {(isSubmitted || touched.password) && errors.password && (
+          <span className="modal__error">{errors.password}</span>
         )}
       </label>
       <label htmlFor="registerModal-password" className="modal__label">
@@ -103,13 +111,13 @@ const RegisterModal = ({
           id="register-username"
           name="username"
           type="text"
-          className="modal__input Roboto"
+          className="modal__input"
           placeholder="Enter username"
           value={values.username}
           onChange={handleChange}
         ></input>
-        {isSubmitted && errors.username && (
-          <span className="modal__error Roboto">{errors.username}</span>
+        {(isSubmitted || touched.username) && errors.username && (
+          <span className="modal__error">{errors.username}</span>
         )}
       </label>
     </ModalWithForm>

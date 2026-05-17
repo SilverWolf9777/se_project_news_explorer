@@ -44,16 +44,14 @@ function ModalWithForm({
           {children}
           <div className="modal__action-column">
             <button
-              className="modal__submit Roboto_medium"
+              className="modal__submit"
               type="submit"
               disabled={isDisabled}
             >
               {buttonText}
             </button>
             {secondaryAction ? (
-              <div className="modal__secondary-action Roboto">
-                {secondaryAction}
-              </div>
+              <div className="modal__secondary-action">{secondaryAction}</div>
             ) : null}
           </div>
         </form>
